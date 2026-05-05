@@ -16,6 +16,21 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
+import {
+  FiBarChart2,
+  FiSmartphone,
+  FiDollarSign,
+  FiUsers,
+  FiFileText,
+  FiClipboard,
+  FiHome,
+  FiRefreshCw,
+  FiClock,
+  FiAlertTriangle,
+  FiTrendingUp,
+  FiCreditCard,
+  FiInbox,
+} from "react-icons/fi";
 
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -287,7 +302,9 @@ function FilterBar({
             }
             className="input-field text-sm py-2 min-w-44"
           >
-            <option value="">🏛️ Semua Cabang</option>
+            <option value="">
+              <FiHome /> Semua Cabang
+            </option>
             {/* Group by daerah */}
             {Object.entries(
               cabangList.reduce((acc, c) => {
@@ -571,7 +588,9 @@ function RantingChart({ data, loading }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold text-nu-green-900">🏠 Setoran per Ranting</h3>
+        <h3 className="font-bold text-nu-green-900">
+          <FiHome /> Setoran per Ranting
+        </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
           Top 8 ranting berdasarkan total nominal
         </p>
@@ -599,9 +618,9 @@ function MetodeChart({ data, loading, total }) {
   const chart = useRef(null);
   const CLR = { TUNAI: "#1a7a3c", TRANSFER: "#f5a623", LAINNYA: "#7dcca4" };
   const LBL = {
-    TUNAI: "💵 Tunai",
-    TRANSFER: "📱 Transfer",
-    LAINNYA: "🔄 Lainnya",
+    TUNAI: <FiDollarSign /> + " Tunai",
+    TRANSFER: <FiSmartphone /> + " Transfer",
+    LAINNYA: <FiRefreshCw /> + " Lainnya",
   };
 
   useEffect(() => {
@@ -673,7 +692,9 @@ function MetodeChart({ data, loading, total }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold text-nu-green-900">💳 Metode Pembayaran</h3>
+        <h3 className="font-bold text-nu-green-900">
+          <FiDollarSign /> Metode Pembayaran
+        </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
           Distribusi metode setoran
         </p>
@@ -701,7 +722,7 @@ function RantingTable({ data, loading }) {
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-nu-green-50">
         <h3 className="font-bold text-nu-green-900">
-          📊 Ringkasan per Ranting
+          <FiBarChart2 /> Ringkasan per Ranting
         </h3>
       </div>
       {loading ? (
@@ -807,7 +828,9 @@ function TransaksiTable({ data, loading }) {
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-nu-green-50 flex items-center justify-between">
         <div>
-          <h3 className="font-bold text-nu-green-900">🕐 Transaksi Terbaru</h3>
+          <h3 className="font-bold text-nu-green-900">
+            <FiClock /> Transaksi Terbaru
+          </h3>
           <p className="text-xs text-nu-green-400 mt-0.5">
             10 setoran paling baru
           </p>
@@ -837,7 +860,7 @@ function TransaksiTable({ data, loading }) {
             Belum ada transaksi di periode ini
           </p>
           <Link href="/scan" className="btn-primary text-sm">
-            📲 Mulai Scan
+            <FiSmartphone /> Mulai Scan
           </Link>
         </div>
       ) : (
@@ -1012,13 +1035,21 @@ export default function DashboardPage() {
             {[
               {
                 href: "/dashboard",
-                icon: "📊",
+                icon: <FiBarChart2 />,
                 label: "Dashboard",
                 active: true,
               },
-              { href: "/scan", icon: "📲", label: "Scan QR" },
-              { href: "/transaksi", icon: "💰", label: "Transaksi" },
-              { href: "/dashboard/kencleng", icon: "🏮", label: "Data Warga" },
+              { href: "/scan", icon: <FiSmartphone />, label: "Scan QR" },
+              {
+                href: "/transaksi",
+                icon: <FiDollarSign />,
+                label: "Transaksi",
+              },
+              {
+                href: "/dashboard/kencleng",
+                icon: <FiUsers />,
+                label: "Data Warga",
+              },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -1083,14 +1114,19 @@ export default function DashboardPage() {
                   href="/scan"
                   className="btn-primary text-sm py-2 px-4 flex items-center gap-2"
                 >
-                  <span>📲</span>
+                  <span>
+                    <FiSmartphone />
+                  </span>
                   <span className="hidden sm:inline">Scan QR</span>
                 </Link>
                 <Link
                   href="/transaksi"
                   className="btn-secondary text-sm py-2 px-4 hidden sm:flex items-center gap-2"
                 >
-                  <span>📋</span> Transaksi
+                  <span>
+                    <FiDollarSign />
+                  </span>{" "}
+                  Transaksi
                 </Link>
               </div>
             </div>
@@ -1101,7 +1137,9 @@ export default function DashboardPage() {
             {/* Error */}
             {error && !loading && (
               <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center gap-3 text-sm">
-                <span className="text-2xl">⚠️</span>
+                <span className="text-2xl">
+                  <FiAlertTriangle />
+                </span>
                 <div>
                   <p className="font-semibold text-red-700">
                     Gagal memuat data
@@ -1131,7 +1169,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <KpiCard
                 accent
-                icon="💰"
+                icon={<FiDollarSign />}
                 label="Total Pemasukan"
                 value={loading ? "—" : formatRpFull(kpi?.totalPemasukan?.nilai)}
                 sub={
@@ -1144,7 +1182,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon="🧾"
+                icon={<FiFileText />}
                 label="Jumlah Transaksi"
                 value={
                   loading
@@ -1161,7 +1199,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon="👥"
+                icon={<FiUsers />}
                 label="Warga Terdaftar"
                 value={
                   loading
@@ -1172,7 +1210,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon="📊"
+                icon={<FiBarChart2 />}
                 label="Rata-rata Setoran"
                 value={loading ? "—" : formatRp(kpi?.rataRata?.nilai)}
                 sub={loading ? "" : ` Maks: ${formatRp(kpi?.rataRata?.max)}`}
@@ -1183,7 +1221,9 @@ export default function DashboardPage() {
             {/* Alert pending */}
             {!loading && (kpi?.pending ?? 0) > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center gap-3">
-                <span className="text-2xl">⏳</span>
+                <span className="text-2xl">
+                  <FiAlertTriangle />
+                </span>
                 <span className="text-amber-800 font-medium text-sm">
                   {kpi.pending} transaksi menunggu konfirmasi
                 </span>
