@@ -1,0 +1,166 @@
+// ============================================================
+// prisma/schema.prisma
+// Schema database utama menggunakan PostgreSQL
+// Jalankan: npx prisma migrate dev --name init
+// ============================================================
+
+// ── Konfigurasi generator Prisma Client ──────────────────────
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ── Konfigurasi koneksi database PostgreSQL ──────────────────
+datasource db {
+  provider = "postgresql"
+  // URL diambil dari environment variable DATABASE_URL
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// MODEL: User
+// Menyimpan data pengguna sistem
+// ============================================================
+model User {
+  id        String   @id @default(cuid()) // Primary key, auto-generated CUID
+  email     String   @unique              // Email unik sebagai identifier login
+  name      String                        // Nama lengkap pengguna
+  password  String                        // Password ter-hash dengan bcrypt
+  role      Role     @default(MEMBER)     // Role akses: ADMIN, MODERATOR, atau MEMBER
+  avatar    String?                       // URL foto profil (opsional)
+  isActive  Boolean  @default(true)       // Status aktif akun
+  createdAt DateTime @default(now())      // Waktu registrasi akun
+  updatedAt DateTime @updatedAt           // Waktu terakhir data diperbarui
+
+  // Relasi: satu user bisa memiliki banyak post
+  posts     Post[]
+
+  // Relasi: satu user bisa memiliki banyak session aktif
+  sessions  Session[]
+
+  // Index untuk mempercepat pencarian berdasarkan email
+  @@index([email])
+  // Nama tabel di database
+  @@map("users")
+}
+
+// ============================================================
+// MODEL: Session
+// Menyimpan sesi autentikasi pengguna (untuk NextAuth)
+// ============================================================
+model Session {
+  id           String   @id @default(cuid()) // Primary key session
+  sessionToken String   @unique              // Token unik sesi
+  userId       String                        // Foreign key ke User
+  expires      DateTime                      // Waktu kadaluarsa sesi
+
+  // Relasi ke User: jika user dihapus, session ikut terhapus
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ============================================================
+// MODEL: Post
+// Menyimpan konten artikel/pengumuman
+// ============================================================
+model Post {
+  id          String      @id @default(cuid()) // Primary key
+  title       String                           // Judul artikel
+  slug        String      @unique              // URL-friendly version dari judul
+  content     String                           // Isi konten artikel (markdown/HTML)
+  excerpt     String?                          // Ringkasan singkat (opsional)
+  thumbnail   String?                          // URL gambar thumbnail (opsional)
+  status      PostStatus  @default(DRAFT)      // Status: DRAFT, PUBLISHED, ARCHIVED
+  authorId    String                           // Foreign key ke User (penulis)
+  categoryId  String?                          // Foreign key ke Category (opsional)
+  viewCount   Int         @default(0)          // Jumlah view artikel
+  publishedAt DateTime?                        // Waktu publikasi (null jika masih draft)
+  createdAt   DateTime    @default(now())      // Waktu artikel dibuat
+  updatedAt   DateTime    @updatedAt           // Waktu terakhir diedit
+
+  // Relasi ke User sebagai penulis
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Relasi ke Category (opsional)
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  // Relasi ke Tag (many-to-many melalui PostTag)
+  tags        PostTag[]
+
+  // Index untuk performa query
+  @@index([slug])
+  @@index([authorId])
+  @@index([status])
+  @@map("posts")
+}
+
+// ============================================================
+// MODEL: Category
+// Kategori untuk pengelompokan artikel
+// ============================================================
+model Category {
+  id          String   @id @default(cuid()) // Primary key
+  name        String   @unique              // Nama kategori (unik)
+  slug        String   @unique              // URL slug kategori
+  description String?                      // Deskripsi kategori (opsional)
+  color       String   @default("#1a7a3c")  // Warna kategori, default hijau NU
+  createdAt   DateTime @default(now())
+
+  // Relasi: satu kategori bisa memiliki banyak post
+  posts       Post[]
+
+  @@map("categories")
+}
+
+// ============================================================
+// MODEL: Tag
+// Tag untuk labeling artikel (many-to-many dengan Post)
+// ============================================================
+model Tag {
+  id    String    @id @default(cuid()) // Primary key
+  name  String    @unique              // Nama tag (unik)
+  slug  String    @unique              // URL slug tag
+
+  // Relasi many-to-many dengan Post melalui PostTag
+  posts PostTag[]
+
+  @@map("tags")
+}
+
+// ============================================================
+// MODEL: PostTag
+// Tabel pivot untuk relasi many-to-many Post <-> Tag
+// ============================================================
+model PostTag {
+  postId String  // Foreign key ke Post
+  tagId  String  // Foreign key ke Tag
+
+  // Relasi ke Post
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  // Relasi ke Tag
+  tag    Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Composite primary key: kombinasi postId + tagId harus unik
+  @@id([postId, tagId])
+  @@map("post_tags")
+}
+
+// ============================================================
+// ENUM: Role
+// Mendefinisikan level akses pengguna
+// ============================================================
+enum Role {
+  ADMIN      // Akses penuh ke semua fitur
+  MODERATOR  // Bisa mengelola konten tapi tidak bisa atur pengguna
+  MEMBER     // Akses terbatas, hanya bisa melihat konten
+}
+
+// ============================================================
+// ENUM: PostStatus
+// Status publikasi artikel
+// ============================================================
+enum PostStatus {
+  DRAFT      // Draft, belum dipublikasikan
+  PUBLISHED  // Sudah dipublikasikan, bisa dilihat publik
+  ARCHIVED   // Diarsipkan, tidak aktif tapi tetap tersimpan
+}

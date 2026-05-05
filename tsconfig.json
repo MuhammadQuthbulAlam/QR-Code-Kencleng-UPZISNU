@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    /* ── Target & Module ── */
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+
+    /* ── Strict Mode - Wajib untuk production-ready code ── */
+    "strict": true,
+    "noUnusedLocals": true,      /* Error jika ada variable tidak terpakai */
+    "noUnusedParameters": true,  /* Error jika ada parameter tidak terpakai */
+    "noImplicitReturns": true,   /* Error jika function tidak selalu return */
+
+    /* ── Next.js specific ── */
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* ── Path Alias - Memudahkan import dengan @ prefix ── */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/app/*": ["./src/app/*"],
+      "@/modules/*": ["./src/modules/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/infrastructure/*": ["./src/infrastructure/*"],
+      "@/interfaces/*": ["./src/interfaces/*"],
+      "@/components/*": ["./src/components/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
