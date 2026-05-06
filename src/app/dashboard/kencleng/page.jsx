@@ -169,7 +169,7 @@ function ImportModal({ onClose, onSuccess }) {
         className="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="font-bold text-nu-green-900 text-lg mb-1">
+        <h3 className="font-bold font-mono text-nu-green-900 text-lg mb-1">
           Import Data Warga
         </h3>
         <p className="text-nu-green-500 text-sm mb-6">
@@ -344,8 +344,8 @@ export default function KenclengPage() {
         <div className="section-container py-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-2xl font-bold font-display">
-                Data Warga Kencleng
+              <h1 className="text-2xl font-bold font-mono text-white">
+                Data Kencleng Warga
               </h1>
               <p className="text-nu-green-200 text-sm mt-1">
                 Manajemen data & QR Code kencleng UPZ Nahdlatul Ulama

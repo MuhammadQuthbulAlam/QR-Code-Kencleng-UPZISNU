@@ -31,12 +31,12 @@ export default function LoginPage() {
 
     try {
       // TODO: Implementasi login dengan NextAuth
-      // await signIn("credentials", {
-      //   email: formData.email,
-      //   password: formData.password,
-      //   redirect: true,
-      //   callbackUrl: "/dashboard"
-      // });
+      await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: true,
+        callbackUrl: "/dashboard",
+      });
 
       // Simulasi delay untuk demo
       await new Promise((resolve) => setTimeout(resolve, 1500));

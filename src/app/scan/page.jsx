@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // ── Konstanta nominal cepat (quick-tap) ──────────────────────
 // Petugas bisa tap nominal umum tanpa mengetik manual
@@ -645,8 +646,17 @@ export default function ScanPage() {
             ← Kembali
           </Link>
           <div className="flex items-center gap-2">
-            <span className="text-nu-gold-400 text-lg">☪️</span>
-            <span className="text-white font-bold font-display text-lg">
+            <span>
+              <Image
+                src="/logo/logo1.png"
+                alt="Logo MWC Leuwimunding"
+                width={180}
+                height={60}
+                className="w-[50px] md:w-[50px] h-auto items-center"
+                priority
+              />
+            </span>
+            <span className="text-white font-bold font-mono text-lg">
               Scan Kencleng
             </span>
           </div>
