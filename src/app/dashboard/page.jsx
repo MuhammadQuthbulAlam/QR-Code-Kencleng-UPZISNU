@@ -16,22 +16,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
-import {
-  FiBarChart2,
-  FiSmartphone,
-  FiDollarSign,
-  FiUsers,
-  FiFileText,
-  FiClipboard,
-  FiHome,
-  FiRefreshCw,
-  FiClock,
-  FiAlertTriangle,
-  FiTrendingUp,
-  FiCreditCard,
-  FiInbox,
-} from "react-icons/fi";
-
+import Image from "next/image";
 // ─────────────────────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────────────────────
@@ -302,9 +287,7 @@ function FilterBar({
             }
             className="input-field text-sm py-2 min-w-44"
           >
-            <option value="">
-              <FiHome /> Semua Cabang
-            </option>
+            <option value="">🏛️ Semua Cabang</option>
             {/* Group by daerah */}
             {Object.entries(
               cabangList.reduce((acc, c) => {
@@ -481,7 +464,9 @@ function TrendChart({ data, loading }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold text-nu-green-900">📈 Tren Setoran Harian</h3>
+        <h3 className="font-bold font-mono text-nu-green-700">
+          Tren Setoran Harian
+        </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
           Nominal terkumpul per hari dalam periode ini
         </p>
@@ -588,8 +573,8 @@ function RantingChart({ data, loading }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold text-nu-green-900">
-          <FiHome /> Setoran per Ranting
+        <h3 className="font-bold font-mono text-nu-green-700">
+          Setoran per Ranting
         </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
           Top 8 ranting berdasarkan total nominal
@@ -618,9 +603,9 @@ function MetodeChart({ data, loading, total }) {
   const chart = useRef(null);
   const CLR = { TUNAI: "#1a7a3c", TRANSFER: "#f5a623", LAINNYA: "#7dcca4" };
   const LBL = {
-    TUNAI: <FiDollarSign /> + " Tunai",
-    TRANSFER: <FiSmartphone /> + " Transfer",
-    LAINNYA: <FiRefreshCw /> + " Lainnya",
+    TUNAI: "💵 Tunai",
+    TRANSFER: "📱 Transfer",
+    LAINNYA: "🔄 Lainnya",
   };
 
   useEffect(() => {
@@ -692,8 +677,8 @@ function MetodeChart({ data, loading, total }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold text-nu-green-900">
-          <FiDollarSign /> Metode Pembayaran
+        <h3 className="font-bold font-mono text-nu-green-900">
+          Metode Pembayaran
         </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
           Distribusi metode setoran
@@ -721,8 +706,8 @@ function RantingTable({ data, loading }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-nu-green-50">
-        <h3 className="font-bold text-nu-green-900">
-          <FiBarChart2 /> Ringkasan per Ranting
+        <h3 className="font-mono font-bold text-nu-green-700">
+          Ringkasan per Ranting
         </h3>
       </div>
       {loading ? (
@@ -828,8 +813,8 @@ function TransaksiTable({ data, loading }) {
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-nu-green-50 flex items-center justify-between">
         <div>
-          <h3 className="font-bold text-nu-green-900">
-            <FiClock /> Transaksi Terbaru
+          <h3 className="font-mono font-bold text-nu-green-700">
+            Transaksi Terbaru
           </h3>
           <p className="text-xs text-nu-green-400 mt-0.5">
             10 setoran paling baru
@@ -860,7 +845,7 @@ function TransaksiTable({ data, loading }) {
             Belum ada transaksi di periode ini
           </p>
           <Link href="/scan" className="btn-primary text-sm">
-            <FiSmartphone /> Mulai Scan
+            📲 Mulai Scan
           </Link>
         </div>
       ) : (
@@ -1019,14 +1004,16 @@ export default function DashboardPage() {
         >
           <div className="p-5 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div
-                className="w-10 h-10 bg-nu-gold-500 rounded-xl flex items-center
-                              justify-center text-xl shadow-lg"
-              >
-                ☪️
-              </div>
+              <Image
+                src="/logo/logo.png"
+                alt="Logo MWC Leuwimunding"
+                width={180}
+                height={60}
+                className="w-[50px] md:w-[50px] h-auto items-center"
+                priority
+              />
               <div>
-                <p className="text-white font-bold text-sm">Portal NU</p>
+                <p className="text-white font-bold text-sm">Portal UPZISNU</p>
                 <p className="text-nu-green-400 text-xs">Admin</p>
               </div>
             </div>
@@ -1035,21 +1022,14 @@ export default function DashboardPage() {
             {[
               {
                 href: "/dashboard",
-                icon: <FiBarChart2 />,
+                icon: "📊",
                 label: "Dashboard",
                 active: true,
               },
-              { href: "/scan", icon: <FiSmartphone />, label: "Scan QR" },
-              {
-                href: "/transaksi",
-                icon: <FiDollarSign />,
-                label: "Transaksi",
-              },
-              {
-                href: "/dashboard/kencleng",
-                icon: <FiUsers />,
-                label: "Data Warga",
-              },
+              { href: "/scan", icon: "📲", label: "Scan QR" },
+              { href: "/transaksi", icon: "💰", label: "Transaksi" },
+              { href: "/dashboard/kencleng", icon: "🏮", label: "Data Warga" },
+              { href: "/dashboard/cabang", icon: "🏮", label: "Ranting" },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -1096,17 +1076,26 @@ export default function DashboardPage() {
           >
             <div className="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3 lg:hidden">
-                <span className="text-nu-gold-500 text-2xl">☪️</span>
-                <span className="font-bold text-nu-green-900">
+                <span>
+                  <Image
+                    src="/logo/logo.png"
+                    alt="Logo MWC Leuwimunding"
+                    width={180}
+                    height={60}
+                    className="w-[50px] md:w-[50px] h-auto items-center"
+                    priority
+                  />
+                </span>
+                <span className="font-bold font-mono text-nu-green-900">
                   Dashboard Admin
                 </span>
               </div>
               <div className="hidden lg:block">
-                <h1 className="font-bold text-nu-green-900 text-xl font-display">
+                <h1 className="font-bold text-nu-green-900 text-xl font-mono">
                   Dashboard Admin
                 </h1>
                 <p className="text-nu-green-400 text-xs">
-                  Sistem Kencleng Nahdlatul Ulama
+                  Sistem Kencleng UPZISNU MWC Leuwimunding
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -1114,19 +1103,14 @@ export default function DashboardPage() {
                   href="/scan"
                   className="btn-primary text-sm py-2 px-4 flex items-center gap-2"
                 >
-                  <span>
-                    <FiSmartphone />
-                  </span>
+                  <span>📲</span>
                   <span className="hidden sm:inline">Scan QR</span>
                 </Link>
                 <Link
                   href="/transaksi"
                   className="btn-secondary text-sm py-2 px-4 hidden sm:flex items-center gap-2"
                 >
-                  <span>
-                    <FiDollarSign />
-                  </span>{" "}
-                  Transaksi
+                  <span>📋</span> Transaksi
                 </Link>
               </div>
             </div>
@@ -1137,9 +1121,7 @@ export default function DashboardPage() {
             {/* Error */}
             {error && !loading && (
               <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center gap-3 text-sm">
-                <span className="text-2xl">
-                  <FiAlertTriangle />
-                </span>
+                <span className="text-2xl">⚠️</span>
                 <div>
                   <p className="font-semibold text-red-700">
                     Gagal memuat data
@@ -1169,7 +1151,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <KpiCard
                 accent
-                icon={<FiDollarSign />}
+                icon="💰"
                 label="Total Pemasukan"
                 value={loading ? "—" : formatRpFull(kpi?.totalPemasukan?.nilai)}
                 sub={
@@ -1182,7 +1164,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon={<FiFileText />}
+                icon="🧾"
                 label="Jumlah Transaksi"
                 value={
                   loading
@@ -1199,7 +1181,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon={<FiUsers />}
+                icon="👥"
                 label="Warga Terdaftar"
                 value={
                   loading
@@ -1210,7 +1192,7 @@ export default function DashboardPage() {
                 loading={loading}
               />
               <KpiCard
-                icon={<FiBarChart2 />}
+                icon="📊"
                 label="Rata-rata Setoran"
                 value={loading ? "—" : formatRp(kpi?.rataRata?.nilai)}
                 sub={loading ? "" : ` Maks: ${formatRp(kpi?.rataRata?.max)}`}
@@ -1221,9 +1203,7 @@ export default function DashboardPage() {
             {/* Alert pending */}
             {!loading && (kpi?.pending ?? 0) > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center gap-3">
-                <span className="text-2xl">
-                  <FiAlertTriangle />
-                </span>
+                <span className="text-2xl">⏳</span>
                 <span className="text-amber-800 font-medium text-sm">
                   {kpi.pending} transaksi menunggu konfirmasi
                 </span>

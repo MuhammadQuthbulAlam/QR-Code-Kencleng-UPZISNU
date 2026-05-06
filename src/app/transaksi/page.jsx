@@ -12,7 +12,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-
+import Image from "next/image";
 // ── Helpers ───────────────────────────────────────────────────
 function formatRp(n) {
   return new Intl.NumberFormat("id-ID", {
@@ -373,8 +373,19 @@ export default function TransaksiPage() {
             ← Kembali
           </Link>
           <div className="flex items-center gap-2">
-            <span className="text-nu-gold-400">☪️</span>
-            <h1 className="font-bold font-display text-lg">Riwayat Setoran</h1>
+            <span>
+              <Image
+                src="/logo/logo1.png"
+                alt="Logo MWC Leuwimunding"
+                width={180}
+                height={60}
+                className="w-[50px] md:w-[50px] h-auto items-center"
+                priority
+              />
+            </span>
+            <h1 className="font-bold font-mono text-white text-lg">
+              Riwayat Setoran
+            </h1>
           </div>
           <Link
             href="/scan"
