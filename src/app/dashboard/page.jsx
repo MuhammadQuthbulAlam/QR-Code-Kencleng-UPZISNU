@@ -677,7 +677,7 @@ function MetodeChart({ data, loading, total }) {
   return (
     <div className="bg-white rounded-2xl border border-nu-green-100 shadow-sm p-5">
       <div className="mb-4">
-        <h3 className="font-bold font-mono text-nu-green-900">
+        <h3 className="font-bold font-mono text-nu-green-700">
           Metode Pembayaran
         </h3>
         <p className="text-xs text-nu-green-400 mt-0.5">
